@@ -17,7 +17,11 @@ const { expect } = chai;
 describe('POST /login', () => {
   let response: Response;
 
-  before(async () => sinon.stub(UserModel, "findOne").resolves(user as UserModel));
+  before(async () => {
+    sinon.stub(UserModel, "findOne")
+      .onCall(0).resolves(user as UserModel)
+      .onCall(3).resolves(null);
+  })
 
   after(() => (UserModel.findOne as sinon.SinonStub).restore());
 
@@ -42,5 +46,12 @@ describe('POST /login', () => {
     const { body: { message } } = response
     expect(response).to.have.status(400);
     expect(message).to.be.deep.equal('All fields must be filled');
+  });
+
+  it('fails with incorrect email', async () => {
+    response = await chai.request(app).post('/login').send(requestBody);
+    const { body: { message } } = response
+    expect(response).to.have.status(401);
+    expect(message).to.be.deep.equal('Incorrect email or password');
   });
 });
