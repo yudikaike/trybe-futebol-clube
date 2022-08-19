@@ -35,4 +35,12 @@ describe('POST /login', () => {
     expect(response).to.have.status(400);
     expect(message).to.be.deep.equal('All fields must be filled');
   });
+
+  it('fails with password missing', async () => {
+    const { password, ...requestBodyWithoutPassword } = requestBody;
+    response = await chai.request(app).post('/login').send(requestBodyWithoutPassword);
+    const { body: { message } } = response
+    expect(response).to.have.status(400);
+    expect(message).to.be.deep.equal('All fields must be filled');
+  });
 });
