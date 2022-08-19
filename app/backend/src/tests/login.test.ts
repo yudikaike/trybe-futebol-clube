@@ -58,4 +58,17 @@ describe('POST /login', () => {
     expect(chaiHttpResponse).to.have.status(400);
     expect(message).to.be.deep.equal('All fields must be filled');
   });
+
+  it('fails with password missing', async () => {
+    chaiHttpResponse = await chai.request(app)
+      .post('/login')
+      .send({
+        email: "test@email.com"
+      });
+
+    const { body: { message } } = chaiHttpResponse
+
+    expect(chaiHttpResponse).to.have.status(400);
+    expect(message).to.be.deep.equal('All fields must be filled');
+  });
 });
