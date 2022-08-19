@@ -27,4 +27,12 @@ describe('POST /login', () => {
     expect(response.body).to.be.a('object');
     expect(response.body).to.have.a.property('token');
   });
+
+  it('fails with email missing', async () => {
+    const { email, ...requestBodyWithoutEmail } = requestBody;
+    response = await chai.request(app).post('/login').send(requestBodyWithoutEmail);
+    const { body: { message } } = response;
+    expect(response).to.have.status(400);
+    expect(message).to.be.deep.equal('All fields must be filled');
+  });
 });
