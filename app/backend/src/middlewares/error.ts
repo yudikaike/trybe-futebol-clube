@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 
 enum ErrorCodes {
   UnauthorizedError = StatusCodes.UNAUTHORIZED,
+  ValidationError = StatusCodes.BAD_REQUEST,
 }
 
 export default class error {
