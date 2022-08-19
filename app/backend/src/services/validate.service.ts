@@ -19,7 +19,7 @@ class ValidateServices {
   static throwCustomError(name: string, message: string) {
     const err = new Error(message);
     err.name = name;
-    throw err;
+    return err;
   }
 }
 

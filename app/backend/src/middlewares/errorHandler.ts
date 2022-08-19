@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 
 enum errorCodes {
   ValidationError = StatusCodes.BAD_REQUEST,
+  NotFoundError = StatusCodes.UNAUTHORIZED,
 }
 
 const errorHandler: ErrorRequestHandler = (
