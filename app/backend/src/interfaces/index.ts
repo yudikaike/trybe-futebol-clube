@@ -1,3 +1,4 @@
 import User from './user.interface';
+import Team from './team.interface';
 
-export default User;
+export { User, Team };

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import * as Joi from 'joi';
 import AuthService from './auth.service';
 import error from '../middlewares';
-import User from '../interfaces';
+import { User } from '../interfaces';
 import UserService from './user.service';
 
 export default class ValidationService {

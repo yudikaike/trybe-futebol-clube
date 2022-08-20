@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
 import 'dotenv/config';
-import User from '../interfaces';
+import { User } from '../interfaces';
 
 export default class AuthService {
   static password(password: string, hash: string): boolean {
