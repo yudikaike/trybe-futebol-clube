@@ -14,7 +14,7 @@ userModel.init({
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
   },
   username: {
     allowNull: false,
