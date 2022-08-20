@@ -6,9 +6,9 @@ import ValidateServices from './validate.service';
 
 class LoginServices {
   static async find({ email, password }: ILogin): Promise<IUser> {
-    const user = await UserModel.findOne({ where: { email } });
+    const user = await UserModel.findOne({ where: { email }, raw: true });
     if (user && AuthServices.password(password, user.password)) return user;
-    throw ValidateServices.throwCustomError('NotFoundError', 'Incorrect email or password');
+    throw ValidateServices.customError('NotFoundError', 'Incorrect email or password');
   }
 }
 
