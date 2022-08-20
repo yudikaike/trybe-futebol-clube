@@ -2,6 +2,7 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 import * as mocha from 'mocha';
 import * as bcryptjs from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
@@ -14,21 +15,21 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
+const userMock = {
+  id: 1,
+  username: "testUsername",
+  role: "testRole",
+  email: "test@email.com",
+  password: bcryptjs.hashSync('testPassword'),
+};
+
 describe('POST /login', () => {
   let chaiHttpResponse: Response;
 
   describe('BAD_REQUEST', () => {
     before(async () => {
-      sinon
-        .stub(UserModel, "findOne")
-        .resolves({
-          id: 1,
-          username: "testUsername",
-          role: "testRole",
-          email: "test@email.com",
-          password: bcryptjs.hashSync('testPassword'),
-        } as UserModel);
-      });
+      sinon.stub(UserModel, "findOne").resolves(userMock as UserModel);
+    });
   
     after(()=>{
       (UserModel.findOne as sinon.SinonStub).restore();
@@ -98,5 +99,46 @@ describe('POST /login', () => {
       expect(chaiHttpResponse).to.have.status(401);
       expect(message).to.be.deep.equal('Incorrect email or password');
     });
+
+    it('fails with incorrect password', async () => {
+      chaiHttpResponse = await chai.request(app)
+        .post('/login')
+        .send({
+          email: "test@email.com",
+          password: "passwordTest"
+        });
+  
+      const { body: { message } } = chaiHttpResponse
+  
+      expect(chaiHttpResponse).to.have.status(401);
+      expect(message).to.be.deep.equal('Incorrect email or password');
+    });
+  })
+});
+
+describe('GET /login/validate', () => {
+
+  let chaiHttpResponse: Response;
+
+  before(async () => {
+    sinon.stub(UserModel, "findOne").resolves(userMock as UserModel)});
+
+  after(()=>{
+    (UserModel.findOne as sinon.SinonStub).restore();
+  })
+
+  it('succeeds', async () => {
+    const { password, ...restOfUser } = userMock;
+
+    chaiHttpResponse = await chai.request(app)
+        .get('/login/validate')
+        .set({'Authorization': jwt.sign({ data: restOfUser }, process.env.JWT_SECRET || 'jwt_secret', {
+          expiresIn: '15m',
+          algorithm: 'HS256',
+        })});
+  
+      expect(chaiHttpResponse).to.have.status(200);
+      expect(chaiHttpResponse.body).to.be.a('object');
+      expect(chaiHttpResponse.body).to.have.a.property('role');
   })
 });
