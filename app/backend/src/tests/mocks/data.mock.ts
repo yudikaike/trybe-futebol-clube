@@ -13,4 +13,9 @@ const requestBody = {
   password: "testPassword",
 };
 
-export { user, requestBody };
+const requestBodyWithIncorrectPassword = {
+  email: "test@email.com",
+  password: "passwordTest",
+};
+
+export { user, requestBody, requestBodyWithIncorrectPassword };
