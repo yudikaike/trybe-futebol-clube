@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AuthService, UserService } from '../services';
+import { AuthService, UserService, ValidationService } from '../services';
 import error from '../middlewares';
 
 export default class UserController {
@@ -11,5 +11,12 @@ export default class UserController {
     }
     const token = AuthService.encode(user);
     res.status(200).json({ token });
+  }
+
+  static async validate(req: Request, res: Response) {
+    const token = req.headers.authorization;
+    if (!token) throw error.custom('UnauthorizedError', 'Token is required');
+    const { role } = await ValidationService.token(token);
+    res.status(200).json({ role });
   }
 }

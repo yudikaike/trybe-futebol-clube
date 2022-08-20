@@ -11,4 +11,8 @@ export default class AuthService {
   static encode({ password, ...user }: User): string {
     return jwt.sign({ ...user }, process.env.JWT_SECRET || 'jwt_secret');
   }
+
+  static decode(token: string): User {
+    return jwt.verify(token, process.env.JWT_SECRET || 'jwt_secret') as User;
+  }
 }
