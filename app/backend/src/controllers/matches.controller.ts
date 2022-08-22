@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import ValidateServices from '../services/validate.service';
 import MatchesServices from '../services/matches.service';
 
 class MatchesController {
@@ -7,6 +8,22 @@ class MatchesController {
       const { inProgress } = req.query;
       const matches = await MatchesServices.list(inProgress === 'true');
       res.status(200).json(matches);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async add(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.headers.authorization;
+      if (!token) {
+        throw ValidateServices
+          .customError('TokenNotFoundError', 'Authentication token is required');
+      }
+      await ValidateServices.validateToken(token);
+      const match = req.body;
+      const newMatch = await MatchesServices.add(match);
+      res.status(201).json(newMatch);
     } catch (err) {
       next(err);
     }
