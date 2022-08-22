@@ -26,6 +26,10 @@ class MatchesServices {
       .create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true });
     return newMatch;
   }
+
+  static async finish(id: number) {
+    await MatchesModel.update({ inProgress: false }, { where: { id } });
+  }
 }
 
 export default MatchesServices;
