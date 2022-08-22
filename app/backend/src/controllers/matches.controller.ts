@@ -38,6 +38,17 @@ class MatchesController {
       next(err);
     }
   }
+
+  static async updateScore(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const newScore = req.body;
+      await MatchesServices.update(newScore, +id);
+      res.status(200).json({ message: 'Score updated!' });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default MatchesController;

@@ -7,5 +7,6 @@ const matchesRouter = Router();
 matchesRouter.get('/', MatchesController.list, errorHandler);
 matchesRouter.post('/', MatchesController.add, errorHandler);
 matchesRouter.patch('/:id/finish', MatchesController.finish, errorHandler);
+matchesRouter.patch('/:id', MatchesController.updateScore, errorHandler);
 
 export default matchesRouter;

@@ -2,6 +2,7 @@ import TeamModel from '../database/models/team.model';
 import MatchesModel from '../database/models/match.model';
 import INewTeam from '../interfaces/INewTeam';
 import ValidateServices from './validate.service';
+import INewScore from '../interfaces/INewScore';
 
 class MatchesServices {
   static async list(query: boolean) {
@@ -47,6 +48,10 @@ class MatchesServices {
       throw ValidateServices.customError('TeamNotFoundError', 'There is no team with such id!');
     }
     return team;
+  }
+
+  static async update({ homeTeamGoals, awayTeamGoals }: INewScore, id: number) {
+    await MatchesModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
   }
 }
 
