@@ -30,6 +30,8 @@ class MatchesServices {
           'It is not possible to create a match with two equal teams',
         );
     }
+    await this.find(+homeTeam);
+    await this.find(+awayTeam);
     const newMatch = await MatchesModel
       .create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true });
     return newMatch;
@@ -37,6 +39,14 @@ class MatchesServices {
 
   static async finish(id: number) {
     await MatchesModel.update({ inProgress: false }, { where: { id } });
+  }
+
+  static async find(id: number) {
+    const team = await TeamModel.findOne({ where: { id } });
+    if (!team) {
+      throw ValidateServices.customError('TeamNotFoundError', 'There is no team with such id!');
+    }
+    return team;
   }
 }
 
