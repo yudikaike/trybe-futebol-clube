@@ -11,6 +11,7 @@ enum ErrorCodes {
 export default class error {
   static handler({ name, message }: Error, _req: Request, res: Response, _next: NextFunction) {
     const status = ErrorCodes[name as keyof typeof ErrorCodes];
+    console.log(message);
     if (!status) return res.status(500).json({ message });
     res.status(+status).json({ message });
   }
