@@ -13,6 +13,11 @@ export default class AuthService {
   }
 
   static decode(token: string): User {
-    return jwt.verify(token, process.env.JWT_SECRET || 'jwt_secret') as User;
+    try {
+      return jwt.verify(token, process.env.JWT_SECRET || 'jwt_secret') as User;
+    } catch (error: any) {
+      error.message = 'Token must be a valid token';
+      throw error;
+    }
   }
 }

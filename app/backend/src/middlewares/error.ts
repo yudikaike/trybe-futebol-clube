@@ -5,6 +5,7 @@ enum ErrorCodes {
   UnauthorizedError = StatusCodes.UNAUTHORIZED,
   ValidationError = StatusCodes.BAD_REQUEST,
   NotFoundError = StatusCodes.NOT_FOUND,
+  JsonWebTokenError = StatusCodes.UNAUTHORIZED,
 }
 
 export default class error {
