@@ -19,9 +19,10 @@ describe('GET /matches', () => {
   let response: Response;
 
   before(async () => {
-    sinon.stub(MatchModel, "findAll").onCall(1).resolves(matches as Match[]);
-    sinon.stub(MatchModel, "findAll").onCall(2).resolves(finishedMatches as Match[]);
-    sinon.stub(MatchModel, "findAll").onCall(3).resolves(inProgressMatches as Match[]);
+    sinon.stub(MatchModel, "findAll")
+      .onCall(0).resolves(matches as Match[])
+      .onCall(1).resolves(finishedMatches as Match[])
+      .onCall(2).resolves(inProgressMatches as Match[]);
   })
 
   after(() => (MatchModel.findAll as sinon.SinonStub).restore())
