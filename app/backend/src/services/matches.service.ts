@@ -1,6 +1,7 @@
 import TeamModel from '../database/models/team.model';
 import MatchesModel from '../database/models/match.model';
 import INewTeam from '../interfaces/INewTeam';
+import ValidateServices from './validate.service';
 
 class MatchesServices {
   static async list(query: boolean) {
@@ -22,6 +23,13 @@ class MatchesServices {
   }
 
   static async add({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: INewTeam) {
+    if (homeTeam === awayTeam) {
+      throw ValidateServices
+        .customError(
+          'EqualTeamsError',
+          'It is not possible to create a match with two equal teams',
+        );
+    }
     const newMatch = await MatchesModel
       .create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true });
     return newMatch;

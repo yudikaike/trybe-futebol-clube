@@ -6,6 +6,7 @@ enum errorCodes {
   NotFoundError = StatusCodes.UNAUTHORIZED,
   TokenNotFoundError = StatusCodes.NOT_FOUND,
   UserNotFoundError = StatusCodes.NOT_FOUND,
+  EqualTeamsError = StatusCodes.UNAUTHORIZED,
 }
 
 const errorHandler: ErrorRequestHandler = (
