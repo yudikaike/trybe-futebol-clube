@@ -1,22 +1,23 @@
 import { Match, Leaderboard } from '../interfaces';
 
 export default class LeaderboardHelper {
-  static score(matches: Match[], filter: string) {
-    return matches.reduce((acc, { homeTeamGoals, awayTeamGoals }) => {
-      if (filter === 'home' && homeTeamGoals > awayTeamGoals) acc.wins += 1;
-      else if (filter === 'away' && homeTeamGoals < awayTeamGoals) acc.wins += 1;
-      else if (homeTeamGoals === awayTeamGoals) acc.draws += 1;
+  static score(matches: Match[], filter: string, id?: number) {
+    return matches.reduce((acc, { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }) => {
+      if ((id === homeTeam || filter === 'home') && homeTeamGoals > awayTeamGoals) acc.wins += 1;
+      else if ((id === awayTeam || filter === 'away') && homeTeamGoals < awayTeamGoals) {
+        acc.wins += 1;
+      } else if (homeTeamGoals === awayTeamGoals) acc.draws += 1;
       else acc.losses += 1;
       return acc;
     }, { wins: 0, draws: 0, losses: 0 });
   }
 
-  static goals(matches: Match[], filter: string) {
-    return matches.reduce((acc, { homeTeamGoals, awayTeamGoals }) => {
-      if (filter === 'home') {
+  static goals(matches: Match[], filter: string, id?: number) {
+    return matches.reduce((acc, { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }) => {
+      if (id === homeTeam || filter === 'home') {
         acc.goalsFavor += +homeTeamGoals;
         acc.goalsOwn += +awayTeamGoals;
-      } else if (filter === 'away') {
+      } else if (id === awayTeam || filter === 'away') {
         acc.goalsFavor += +awayTeamGoals;
         acc.goalsOwn += +homeTeamGoals;
       }

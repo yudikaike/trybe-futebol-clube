@@ -2,9 +2,11 @@ import { Model } from 'sequelize/types';
 
 export default interface Match extends Model {
   id: number,
-  homeTeam: { teamName: string },
+  homeTeam: number,
+  teamHome?: { teamName: string }
   homeTeamGoals: number,
-  awayTeam: { teamName: string },
+  awayTeam: number,
+  teamAway?: { teamName: string }
   awayTeamGoals: number,
   inProgress: boolean,
 }
