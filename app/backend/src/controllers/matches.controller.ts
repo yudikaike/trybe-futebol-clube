@@ -6,8 +6,13 @@ class MatchesController {
   static async list(req: Request, res: Response, next: NextFunction) {
     try {
       const { inProgress } = req.query;
-      const matches = await MatchesServices.list(inProgress === 'true');
-      res.status(200).json(matches);
+      if (inProgress) {
+        const matches = await MatchesServices.listFiltered(inProgress === 'true');
+        res.status(200).json(matches);
+      } else {
+        const matches = await MatchesServices.list();
+        res.status(200).json(matches);
+      }
     } catch (err) {
       next(err);
     }

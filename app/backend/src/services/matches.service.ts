@@ -5,21 +5,22 @@ import ValidateServices from './validate.service';
 import INewScore from '../interfaces/INewScore';
 
 class MatchesServices {
-  static async list(query: boolean) {
-    if (query) {
-      const matches = await MatchesModel
-        .findAll({ where: { inProgress: query },
-          include: [
-            { model: TeamModel, as: 'teamHome', attributes: ['teamName'] },
-            { model: TeamModel, as: 'teamAway', attributes: ['teamName'] },
-          ] });
-      return matches;
-    }
+  static async list() {
     const matches = await MatchesModel
       .findAll({ include: [
         { model: TeamModel, as: 'teamHome', attributes: ['teamName'] },
         { model: TeamModel, as: 'teamAway', attributes: ['teamName'] },
       ] });
+    return matches;
+  }
+
+  static async listFiltered(query: boolean) {
+    const matches = await MatchesModel
+      .findAll({ where: { inProgress: query },
+        include: [
+          { model: TeamModel, as: 'teamHome', attributes: ['teamName'] },
+          { model: TeamModel, as: 'teamAway', attributes: ['teamName'] },
+        ] });
     return matches;
   }
 
