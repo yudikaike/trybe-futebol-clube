@@ -19,6 +19,7 @@ export default class ValidationService {
   }
 
   static async token(token: string): Promise<User> {
+    console.log(token);
     const { email } = AuthService.decode(token);
     const user = await UserService.find(email);
     if (!user) throw error.custom('NotFoundError', 'Invalid token');
